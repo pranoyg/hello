@@ -1,11 +1,15 @@
 ## Customize the test machine
 machine:
-  node:
-    version: 0.10.22
+
   timezone:
     America/Los_Angeles # Set the timezone
 
-   # Override /etc/hosts
+  # Version of ruby to use
+  ruby:
+    version:
+      1.8.7-p358-falcon-perf
+
+  # Override /etc/hosts
   hosts:
     circlehost: 127.0.0.1
     dev.mycompany.com: 127.0.0.1
@@ -24,10 +28,13 @@ checkout:
 ## Customize dependencies
 dependencies:
   pre:
-    - npm install coffee-script # install from a different package manager
-   # - gem uninstall bundler # use a custom version of bundler
+    - npm install coffeescript # install from a different package manager
+    - gem uninstall bundler # use a custom version of bundler
     - gem install bundler --pre
 
+  override:
+    - bundle install: # note ':' here
+        timeout: 180 # fail if command has no output for 3 minutes
 
   # we automatically cache and restore many dependencies between
   # builds. If you need to, you can add custom paths to cache:
@@ -59,10 +66,8 @@ deployment:
     heroku:
       appname: foo-bar-123
 
-
-
 ## Custom notifications
 notify:
   webhooks:
     # A list of hashes representing hooks. Only the url field is supported.
-    -url: http://54.148.211.150/circleci/4269ef955f8ec1d9369e130f
+    - url: http://54.148.211.150/circleci/be58d3f34a0b7f5ad7fb962e
